@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+ 
+    <nav>
+        <span class="logo">Workout Tracker</span>
+        <ul>
+            <li><a href="/">Dashboard</a></li>
+            <li><a href="/log">Log Activity</a></li>
+            <li><a href="/schedule">Schedule</a></li>
+            <li><a href="/calendar">Calendar</a></li>
+        </ul>
+    </nav>
+ 
+    <div class="container">
+        <h1>Weekly Schedule</h1>
+ 
+        <form method="POST" class="workout-form">
+            <div class="form-group">
+                <label>Day</label>
+                <select name="day" required>
+                    <option value="">Select a day</option>
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Friday">Friday</option>
+                    <option value="Saturday">Saturday</option>
+                    <option value="Sunday">Sunday</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Activity</label>
+                <input type="text" name="exercise" placeholder="e.g. Leg Day, 5km Run, Tennis" required />
+            </div>
+            <div class="form-group">
+                <label>Notes</label>
+                <input type="text" name="notes" placeholder="e.g. Focus on squats" />
+            </div>
+            <button type="submit" class="btn">Add to Schedule</button>
+        </form>
+ 
+        <h2>My Schedule</h2>
+        {% if scheduled %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Day</th>
+                    <th>Activity</th>
+                    <th>Notes</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in scheduled %}
+                <tr class="{{ 'completed' if item.completed else '' }}">
+                    <td>{{ item.day }}</td>
+                    <td>{{ item.exercise }}</td>
+                    <td>{{ item.notes }}</td>
+                    <td>{{ 'Done' if item.completed else 'Planned' }}</td>
+                    <td>
+                        {% if not item.completed %}
+                        <a href="/complete/{{ item.id }}" class="btn-small">Mark Done</a>
+                        {% endif %}
+                        <a href="/delete_schedule/{{ item.id }}" class="delete-btn">✕</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="empty">No activities scheduled yet. Add one above!</p>
+        {% endif %}
+ 
+    </div>
+ 
+    <footer>
+        <p>© 2026 Julia Kasperek</p>
+    </footer>
+ 
+</body>
+</html>

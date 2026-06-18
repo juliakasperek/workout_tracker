@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+ 
+    <nav>
+        <span class="logo">Workout Tracker</span>
+        <ul>
+            <li><a href="/">Dashboard</a></li>
+            <li><a href="/log">Log Activity</a></li>
+            <li><a href="/schedule">Schedule</a></li>
+            <li><a href="/calendar">Calendar</a></li>
+        </ul>
+    </nav>
+ 
+    <div class="container">
+        <h1>Dashboard</h1>
+        <p class="date-label">{{ today.strftime('%A, %B %d %Y') }}</p>
+ 
+        <!-- TODAY'S STATS -->
+        <h2>Today</h2>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Calories Burned</h3>
+                <p class="stat-number">{{ daily_calories }} kcal</p>
+            </div>
+            <div class="stat-card">
+                <h3>Activities Today</h3>
+                <p class="stat-number">{{ today_count }}</p>
+            </div>
+        </div>
+ 
+        <!-- WEEKLY STATS -->
+        <h2>This Week</h2>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Activities</h3>
+                <p class="stat-number">{{ weekly_count }}</p>
+            </div>
+            <div class="stat-card">
+                <h3>Calories Burned</h3>
+                <p class="stat-number">{{ weekly_calories }} kcal</p>
+            </div>
+            <div class="stat-card">
+                <h3>KM Run</h3>
+                <p class="stat-number">{{ weekly_km }} km</p>
+            </div>
+        </div>
+ 
+        <!-- RECENT ACTIVITIES -->
+        <h2>Recent Activities</h2>
+        {% if activities %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Activity</th>
+                    <th>Type</th>
+                    <th>Duration (min)</th>
+                    <th>Calories</th>
+                    <th>Date</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for activity in activities %}
+                <tr>
+                    <td>{{ activity.exercise }}</td>
+                    <td>{{ activity.exercise_type }}</td>
+                    <td>{{ activity.duration }}</td>
+                    <td>{{ activity.calories }}</td>
+                    <td>{{ activity.date }}</td>
+                    <td><a href="/delete/{{ activity.id }}" class="delete-btn">✕</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="empty">No activities logged yet. <a href="/log">Log one now!</a></p>
+        {% endif %}
+ 
+    </div>
+ 
+    <footer>
+        <p>© 2026 Julia Kasperek</p>
+    </footer>
+ 
+</body>
+</html>

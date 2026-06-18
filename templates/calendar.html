@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+ 
+    <nav>
+        <span class="logo">Workout Tracker</span>
+        <ul>
+            <li><a href="/">Dashboard</a></li>
+            <li><a href="/log">Log Activity</a></li>
+            <li><a href="/schedule">Schedule</a></li>
+            <li><a href="/calendar">Calendar</a></li>
+        </ul>
+    </nav>
+ 
+    <div class="container">
+ 
+        <div class="calendar-nav">
+            <a href="/calendar/{{ prev_year }}/{{ prev_month }}" class="btn">Prev</a>
+            <h1>{{ month_name }} {{ year }}</h1>
+            <a href="/calendar/{{ next_year }}/{{ next_month }}" class="btn">Next</a>
+        </div>
+ 
+        <div class="calendar-grid">
+            <div class="calendar-day-header">Mon</div>
+            <div class="calendar-day-header">Tue</div>
+            <div class="calendar-day-header">Wed</div>
+            <div class="calendar-day-header">Thu</div>
+            <div class="calendar-day-header">Fri</div>
+            <div class="calendar-day-header">Sat</div>
+            <div class="calendar-day-header">Sun</div>
+ 
+            {% for week in cal %}
+                {% for day in week %}
+                    {% if day == 0 %}
+                        <div class="calendar-day empty-day"></div>
+                    {% else %}
+                        <div class="calendar-day
+                            {% if day in activity_map %}has-workout{% endif %}
+                            {% if day == today.day and month == today.month and year == today.year %}today{% endif %}"
+                            onclick="toggleDay({{ day }})"
+                        >
+                            <h4>{{ day }}</h4>
+ 
+                            <div class="day-summary" id="summary-{{ day }}">
+                                {% if day in activity_map %}
+                                    {% for item in activity_map[day] %}
+                                        <p>{{ item.exercise }}</p>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+ 
+                            <div class="day-detail" id="detail-{{ day }}" style="display:none;">
+                                {% if day in activity_map %}
+                                    {% for item in activity_map[day] %}
+                                        <div class="detail-card">
+                                            <p class="detail-title">{{ item.exercise }}</p>
+                                            <p>Type: {{ item.exercise_type }}</p>
+                                            <p>Duration: {{ item.duration }} min</p>
+                                            <p>Calories: {{ item.calories }} kcal</p>
+                                            {% if item.num_sets %}
+                                            <p>Sets: {{ item.num_sets }}</p>
+                                            {% endif %}
+                                            {% if item.reps %}
+                                            <p>Reps: {{ item.reps }}</p>
+                                            {% endif %}
+                                            {% if item.weight %}
+                                            <p>Weight: {{ item.weight }}kg</p>
+                                            {% endif %}
+                                            {% if item.distance %}
+                                            <p>Distance: {{ item.distance }}km</p>
+                                            {% endif %}
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <p class="no-workout">Rest day</p>
+                                {% endif %}
+                            </div>
+ 
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+ 
+        </div>
+    </div>
+ 
+    <footer>
+        <p>© 2026 Julia Kasperek</p>
+    </footer>
+ 
+    <script>
+        let openDay = null;
+ 
+        function toggleDay(day) {
+            const summary = document.getElementById('summary-' + day);
+            const detail = document.getElementById('detail-' + day);
+ 
+            if (openDay && openDay !== day) {
+                document.getElementById('summary-' + openDay).style.display = 'block';
+                document.getElementById('detail-' + openDay).style.display = 'none';
+            }
+ 
+            if (detail.style.display === 'none') {
+                summary.style.display = 'none';
+                detail.style.display = 'block';
+                openDay = day;
+            } else {
+                summary.style.display = 'block';
+                detail.style.display = 'none';
+                openDay = null;
+            }
+        }
+    </script>
+ 
+</body>
+</html>

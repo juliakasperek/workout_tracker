@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log Activity</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+ 
+    <nav>
+        <span class="logo">Workout Tracker</span>
+        <ul>
+            <li><a href="/">Dashboard</a></li>
+            <li><a href="/log">Log Activity</a></li>
+            <li><a href="/schedule">Schedule</a></li>
+            <li><a href="/calendar">Calendar</a></li>
+        </ul>
+    </nav>
+ 
+    <div class="container">
+        <h1>Log Activity</h1>
+ 
+        <form method="POST" class="workout-form">
+ 
+            <div class="form-group">
+                <label>Activity Type</label>
+                <select name="exercise_type" id="exercise_type" onchange="updateForm()" required>
+                    <option value="">Select activity</option>
+                    <optgroup label="Weight Training">
+                        <option value="weights">Weight Training</option>
+                    </optgroup>
+                    <optgroup label="Cardio">
+                        <option value="run">Run</option>
+                        <option value="long_run">Long Run</option>
+                        <option value="intervals">Intervals</option>
+                        <option value="walking">Walking</option>
+                        <option value="stairmaster">Stair Master</option>
+                        <option value="bike">Bike</option>
+                        <option value="swimming">Swimming</option>
+                        <option value="tennis">Tennis</option>
+                        <option value="pickleball">Pickleball</option>
+                    </optgroup>
+                </select>
+            </div>
+ 
+            <div id="weights-fields" style="display:none;">
+                <div class="form-group">
+                    <label>Exercise Name</label>
+                    <input type="text" name="exercise_name" placeholder="e.g. Bench Press, Squats" />
+                </div>
+                <div class="form-group">
+                    <label>Sets</label>
+                    <input type="number" name="num_sets" placeholder="e.g. 3" />
+                </div>
+                <div class="form-group">
+                    <label>Reps</label>
+                    <input type="number" name="reps" placeholder="e.g. 10" />
+                </div>
+                <div class="form-group">
+                    <label>Weight Lifted (kg)</label>
+                    <input type="number" name="weight" placeholder="e.g. 50" step="0.5" />
+                </div>
+            </div>
+ 
+            <div id="running-fields" style="display:none;">
+                <div class="form-group">
+                    <label>Distance (km)</label>
+                    <input type="number" name="distance" placeholder="e.g. 5.5" step="0.1" />
+                </div>
+            </div>
+ 
+            <div id="shared-fields" style="display:none;">
+                <div class="form-group">
+                    <label>Duration (minutes)</label>
+                    <input type="number" name="duration" placeholder="e.g. 45" required />
+                </div>
+                <div class="form-group">
+                    <label>Your Body Weight (kg)</label>
+                    <input type="number" name="body_weight" placeholder="e.g. 60" step="0.1" required />
+                </div>
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" name="date" value="{{ today }}" required />
+                </div>
+                <button type="submit" class="btn">Save Activity</button>
+            </div>
+ 
+        </form>
+    </div>
+ 
+    <footer>
+        <p>© 2026 Julia Kasperek</p>
+    </footer>
+ 
+    <script>
+        function updateForm() {
+            const type = document.getElementById('exercise_type').value;
+            const weightsFields = document.getElementById('weights-fields');
+            const runningFields = document.getElementById('running-fields');
+            const sharedFields = document.getElementById('shared-fields');
+ 
+            weightsFields.style.display = 'none';
+            runningFields.style.display = 'none';
+            sharedFields.style.display = 'none';
+ 
+            if (type === '') return;
+ 
+            sharedFields.style.display = 'block';
+ 
+            if (type === 'weights') {
+                weightsFields.style.display = 'block';
+            } else if (type === 'run' || type === 'long_run' || type === 'intervals') {
+                runningFields.style.display = 'block';
+            }
+        }
+    </script>
+ 
+</body>
+</html>
