@@ -25,7 +25,7 @@ A single unified form with a dropdown to select any activity type, organized int
  
 ### Log Activity — Cardio
 When a cardio activity is selected the form dynamically shows relevant fields like distance for running types.
-![Log Activity Cardio](screenshots/log_Activity_Cardio.png)
+![Log Activity Cardio](screenshots/log_activity_cardio.png)
  
 ### Log Activity — Weight Training
 When Weight Training is selected the form shows exercise name, sets, reps, and weight lifted fields.
@@ -83,4 +83,4 @@ python3 app.py
  
 6. Open `http://127.0.0.1:5000` in your browser
 ## Author
-Julia Kasperek — [GitHub](https://github.com/juliakasperek) · [Portfolio](https://juliakasperek.github.io)
+Julia Kasperek — [GitHub](https://github.com/juliakasperek) · [Portfolio](https://juliakasperek.github.io/Portfolio)
